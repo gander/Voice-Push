@@ -81,10 +81,19 @@
                       class="btn btn-outline-primary btn-sm"
                       @click="handleMicrophonePermissions"
                       :disabled="isActive"
+                      v-if="!canRecord"
                     >
                       <i data-feather="mic" class="me-1"></i>
-                      {{ canRecord ? 'Mikrofon OK' : 'Ustaw mikrofon' }}
+                      Ustaw mikrofon
                     </button>
+                    
+                    <span
+                      class="badge bg-success d-flex align-items-center gap-1"
+                      v-if="canRecord"
+                    >
+                      <i data-feather="check-circle" style="width: 14px; height: 14px;"></i>
+                      Mikrofon gotowy
+                    </span>
                   </div>
                 </div>
               </div>
@@ -122,7 +131,7 @@
 
     <footer class="bg-light text-center p-3 mt-auto">
       <small class="text-muted">
-        Push-to-Talk Audio Recorder v1.1.5 | Vue.js 3 + TypeScript
+        Push-to-Talk Audio Recorder v1.1.6 | Vue.js 3 + TypeScript
       </small>
     </footer>
   </div>

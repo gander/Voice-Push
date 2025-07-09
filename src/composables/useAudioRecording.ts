@@ -90,11 +90,10 @@ export function useAudioRecording(configuration: Configuration) {
         }
       }
       
-      // If no permissions or initialization failed, wait for user interaction
-      canRecord.value = false
-      recordingStatus.value = 'idle'
-      errorMessage.value = ''
-      logger.logInfo('Audio recorder gotowy - kliknij przycisk aby udzielić uprawnień')
+      // If no permissions, try to request them automatically
+      logger.logInfo('Automatyczne żądanie uprawnień do mikrofonu...')
+      await requestMicrophoneAccess()
+      
     } catch (error) {
       logger.logError('Błąd inicjalizacji audio recorder', error)
       canRecord.value = false
