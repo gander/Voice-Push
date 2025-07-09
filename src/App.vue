@@ -122,7 +122,7 @@
 
     <footer class="bg-light text-center p-3 mt-auto">
       <small class="text-muted">
-        Push-to-Talk Audio Recorder v1.1.4 | Vue.js 3 + TypeScript
+        Push-to-Talk Audio Recorder v1.1.5 | Vue.js 3 + TypeScript
       </small>
     </footer>
   </div>

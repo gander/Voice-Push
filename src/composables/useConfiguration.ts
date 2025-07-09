@@ -36,11 +36,9 @@ export function useConfiguration() {
       logger.logInfo(`Format audio załadowany z env: ${envFormat}`)
     }
     
-    // Show configuration panel if no endpoint is configured
-    showConfiguration.value = !endpoint.value
-    if (showConfiguration.value) {
-      logger.logInfo('Panel konfiguracji będzie wyświetlony (brak endpointu)')
-    }
+    // Configuration panel is hidden by default - user can open it manually
+    showConfiguration.value = false
+    logger.logInfo('Panel konfiguracji ukryty domyślnie')
   }
 
   // Configuration object for reactive access
