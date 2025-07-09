@@ -75,7 +75,7 @@ export function useLogger() {
   // Clear logs
   const clearLogs = () => {
     logs.value = []
-    logInfo('Logi zostały wyczyszczone')
+    // Don't log clearing action to avoid unnecessary noise
   }
 
   // Audio-specific logging methods
@@ -189,10 +189,8 @@ export function useLogger() {
   // System startup logs
   const logAppStart = () => {
     clearLogs()
-    logSuccess('Aplikacja Push-to-Talk została uruchomiona')
-    logInfo(`User Agent: ${navigator.userAgent}`)
-    logInfo(`Język: ${navigator.language}`)
-    logDebug(`Okno: ${window.innerWidth}x${window.innerHeight}`)
+    // Only log essential startup information, skip verbose system details
+    logSuccess('Aplikacja gotowa do użycia')
   }
 
   return {
