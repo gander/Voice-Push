@@ -1,6 +1,6 @@
 {
   "name": "push-to-talk-recorder",
-  "version": "1.2.0",
+  "version": "1.1.9",
   "description": "Vue.js 3 + TypeScript push-to-talk audio recording application with configurable endpoints and audio formats",
   "main": "src/main.ts",
   "type": "module",

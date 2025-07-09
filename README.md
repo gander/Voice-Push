@@ -97,7 +97,7 @@ src/
 ## Wdrożenie
 
 ### 🌐 Demo Online
-Aplikacja jest dostępna pod adresem: **https://push-to-talk-recorder.replit.app**
+Aplikacja jest dostępna pod adresem: **https://voice-push.replit.app**
 
 ### Serwer statyczny
 Skopiuj zawartość folderu `dist/` na dowolny serwer HTTP:
