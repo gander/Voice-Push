@@ -4,6 +4,7 @@
  */
 
 import type { AudioFormat } from '@/types'
+import { useLogger } from '@/composables/useLogger'
 
 export interface TransmissionOptions {
   endpoint: string
@@ -21,6 +22,7 @@ export interface TransmissionResult {
 
 export class HttpClient {
   private readonly timeout: number = 30000 // 30 seconds
+  private logger = useLogger()
 
   /**
    * Send audio blob to the configured endpoint
@@ -39,13 +41,13 @@ export class HttpClient {
     try {
       const formData = this.createFormData(audioBlob, audioFormat, filename, additionalFields)
       
-      console.log(`Sending ${audioBlob.size} bytes to ${endpoint}`)
+      this.logger.logDebug(`Wysyłanie ${(audioBlob.size / 1024).toFixed(1)} KB do ${endpoint}`)
 
       const response = await this.makeRequest(endpoint, formData)
       
-      return await this.handleResponse(response)
+      return await this.handleResponse(response, endpoint)
     } catch (error) {
-      console.error('Failed to send audio:', error)
+      this.logger.logError('Błąd wysyłania audio', error)
       
       if (error instanceof Error) {
         throw error
@@ -122,7 +124,7 @@ export class HttpClient {
   /**
    * Handle HTTP response and extract result data
    */
-  private async handleResponse(response: Response): Promise<TransmissionResult> {
+  private async handleResponse(response: Response, endpoint: string): Promise<TransmissionResult> {
     const result: TransmissionResult = {
       success: response.ok,
       status: response.status,
@@ -148,9 +150,12 @@ export class HttpClient {
         }
       }
     } catch (parseError) {
-      console.warn('Failed to parse response:', parseError)
+      this.logger.logWarning('Błąd parsowania odpowiedzi serwera', parseError)
       // Keep the original status message if parsing fails
     }
+
+    // Log detailed server response
+    this.logger.logServerResponse(endpoint, response.status, result.responseData, result.message)
 
     if (!response.ok) {
       // Enhance error message based on status code

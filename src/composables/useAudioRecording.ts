@@ -166,7 +166,7 @@ export function useAudioRecording(configuration: Configuration) {
       
       if (result.success) {
         recordingStatus.value = 'success'
-        logger.logTransmissionSuccess(configuration.endpoint, result.responseData)
+        logger.logTransmissionSuccess(configuration.endpoint, result)
         
         // Reset to idle after a short delay
         setTimeout(() => {

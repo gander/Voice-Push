@@ -95,12 +95,47 @@ export function useLogger() {
     logInfo(`Rozpoczęto wysyłanie do: ${endpoint}`)
   }
 
-  const logTransmissionSuccess = (endpoint: string, responseData?: any) => {
-    logSuccess(`Pomyślnie wysłano do: ${endpoint}`, responseData)
+  const logTransmissionSuccess = (endpoint: string, result: any) => {
+    const statusCode = result?.status || 'unknown'
+    const message = result?.message || 'Success'
+    logSuccess(`Pomyślnie wysłano do: ${endpoint} (${statusCode})`, {
+      status: statusCode,
+      message: message,
+      responseData: result?.responseData,
+      endpoint: endpoint
+    })
   }
 
   const logTransmissionError = (endpoint: string, error: any) => {
     logError(`Błąd wysyłania do: ${endpoint}`, error)
+  }
+
+  const logServerResponse = (endpoint: string, status: number, responseData: any, responseText?: string) => {
+    if (status >= 200 && status < 300) {
+      logSuccess(`Odpowiedź serwera ${status}: ${responseText || 'OK'}`, {
+        endpoint,
+        status,
+        data: responseData
+      })
+    } else if (status >= 400 && status < 500) {
+      logWarning(`Błąd klienta ${status}: ${responseText || 'Client Error'}`, {
+        endpoint,
+        status,
+        data: responseData
+      })
+    } else if (status >= 500) {
+      logError(`Błąd serwera ${status}: ${responseText || 'Server Error'}`, {
+        endpoint,
+        status,
+        data: responseData
+      })
+    } else {
+      logInfo(`Odpowiedź serwera ${status}: ${responseText || 'Unknown'}`, {
+        endpoint,
+        status,
+        data: responseData
+      })
+    }
   }
 
   const logPermissionRequest = () => {
@@ -187,6 +222,7 @@ export function useLogger() {
     logRecorderState,
     logHttpRequest,
     logInitialization,
-    logAppStart
+    logAppStart,
+    logServerResponse
   }
 }
