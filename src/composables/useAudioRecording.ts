@@ -39,15 +39,62 @@ export function useAudioRecording(configuration: Configuration) {
     return 'Ready'
   })
 
+  // Check existing microphone permissions
+  const checkMicrophonePermissions = async () => {
+    try {
+      logger.logDebug('Sprawdzanie uprawnień mikrofonu...')
+      
+      if (!navigator.mediaDevices || !navigator.mediaDevices.query) {
+        logger.logWarning('Permissions API nie jest obsługiwane')
+        return false
+      }
+
+      const permission = await navigator.permissions.query({ name: 'microphone' as PermissionName })
+      logger.logDebug(`Status uprawnień mikrofonu: ${permission.state}`)
+      
+      if (permission.state === 'granted') {
+        logger.logSuccess('Uprawnienia mikrofonu już przyznane')
+        return true
+      } else if (permission.state === 'denied') {
+        logger.logWarning('Uprawnienia mikrofonu odrzucone przez użytkownika')
+        return false
+      } else {
+        logger.logInfo('Uprawnienia mikrofonu wymagają akcji użytkownika')
+        return false
+      }
+    } catch (error) {
+      logger.logDebug('Nie można sprawdzić uprawnień - prawdopodobnie nie obsługiwane', error)
+      return false
+    }
+  }
+
   // Initialize audio recorder
   const initializeRecorder = async () => {
     try {
       logger.logInitialization('Audio Recorder')
-      // Don't initialize immediately - wait for user interaction
+      
+      // Check if permissions already granted
+      const hasPermissions = await checkMicrophonePermissions()
+      
+      if (hasPermissions) {
+        // Try to initialize immediately if permissions are granted
+        try {
+          await audioRecorder.initialize()
+          canRecord.value = true
+          recordingStatus.value = 'idle'
+          errorMessage.value = ''
+          logger.logSuccess('Audio recorder zainicjalizowany z istniejącymi uprawnieniami')
+          return
+        } catch (error) {
+          logger.logWarning('Błąd inicjalizacji mimo uprawnień - może mikrofon jest zajęty', error)
+        }
+      }
+      
+      // If no permissions or initialization failed, wait for user interaction
       canRecord.value = false
       recordingStatus.value = 'idle'
       errorMessage.value = ''
-      logger.logInfo('Audio recorder gotowy do interakcji użytkownika')
+      logger.logInfo('Audio recorder gotowy - kliknij przycisk aby udzielić uprawnień')
     } catch (error) {
       logger.logError('Błąd inicjalizacji audio recorder', error)
       canRecord.value = false
@@ -108,6 +155,8 @@ export function useAudioRecording(configuration: Configuration) {
       
       // If still can't record after permission request, stop here
       if (!canRecord.value) {
+        logger.logError('Nie można rozpocząć nagrywania - brak uprawnień do mikrofonu')
+        setError('Microphone access required')
         return
       }
     }
@@ -124,7 +173,19 @@ export function useAudioRecording(configuration: Configuration) {
       logger.logError('Błąd rozpoczęcia nagrywania', error)
       isRecording.value = false
       recordingStatus.value = 'error'
-      setError(error instanceof Error ? error.message : 'Failed to start recording')
+      
+      // More specific error handling
+      if (error instanceof Error) {
+        if (error.message.includes('Permission denied') || error.message.includes('NotAllowedError')) {
+          setError('Microphone access denied. Please click "Ustaw mikrofon" button to grant permissions.')
+        } else if (error.message.includes('NotFoundError')) {
+          setError('No microphone found. Please connect a microphone and try again.')
+        } else {
+          setError(error.message)
+        }
+      } else {
+        setError('Failed to start recording')
+      }
     }
   }
 
@@ -353,6 +414,7 @@ export function useAudioRecording(configuration: Configuration) {
     // Utils
     generateFilename,
     checkRecorderHealth,
-    requestMicrophoneAccess
+    requestMicrophoneAccess,
+    checkMicrophonePermissions
   }
 }

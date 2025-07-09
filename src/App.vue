@@ -60,13 +60,24 @@
                     <small>{{ configuration.audioFormat.toUpperCase() }}</small>
                   </div>
                   
-                  <button
-                    class="btn btn-outline-secondary btn-sm"
-                    @click="showConfiguration = true"
-                  >
-                    <i data-feather="settings" class="me-1"></i>
-                    Configure
-                  </button>
+                  <div class="d-flex gap-2 justify-content-center">
+                    <button
+                      class="btn btn-outline-secondary btn-sm"
+                      @click="showConfiguration = true"
+                    >
+                      <i data-feather="settings" class="me-1"></i>
+                      Configure
+                    </button>
+                    
+                    <button
+                      class="btn btn-outline-primary btn-sm"
+                      @click="handleMicrophonePermissions"
+                      :disabled="isActive"
+                    >
+                      <i data-feather="mic" class="me-1"></i>
+                      {{ canRecord ? 'Mikrofon OK' : 'Ustaw mikrofon' }}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -102,7 +113,7 @@
 
     <footer class="bg-light text-center p-3 mt-auto">
       <small class="text-muted">
-        Push-to-Talk Audio Recorder v1.1.2 | Vue.js 3 + TypeScript
+        Push-to-Talk Audio Recorder v1.1.3 | Vue.js 3 + TypeScript
       </small>
     </footer>
   </div>
@@ -136,7 +147,8 @@ const {
   errorMessage,
   startRecording,
   stopRecording,
-  requestMicrophoneAccess
+  requestMicrophoneAccess,
+  checkMicrophonePermissions
 } = useAudioRecording(configuration.value)
 
 // Computed property for button state
@@ -150,6 +162,20 @@ const handleButtonClick = async () => {
     await requestMicrophoneAccess()
   } else if (canRecord.value) {
     await startRecording()
+  }
+}
+
+// Handle microphone permissions button
+const handleMicrophonePermissions = async () => {
+  if (canRecord.value) {
+    // Already have permissions, check if still valid
+    const hasPermissions = await checkMicrophonePermissions()
+    if (!hasPermissions) {
+      await requestMicrophoneAccess()
+    }
+  } else {
+    // Request permissions
+    await requestMicrophoneAccess()
   }
 }
 
