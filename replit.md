@@ -99,3 +99,17 @@ Preferred communication style: Simple, everyday language (Polish language suppor
 - **CORS Handling**: Configurable endpoints must support cross-origin requests for audio upload
 - **Permission Management**: Explicit microphone permission requests with user-friendly error handling
 - **Data Privacy**: No local storage of audio data, immediate transmission after recording
+
+## Documentation and Legal
+
+### Project Documentation
+- **README.md**: Comprehensive setup guide, configuration options, and troubleshooting
+- **LICENSE**: MIT License with Adam Gąsowski's copyright
+- **PRIVACY.md**: Detailed privacy policy explaining data handling and user rights
+
+### Recent Changes (July 9, 2025)
+- ✓ Created comprehensive README.md with installation and configuration instructions
+- ✓ Added MIT LICENSE with proper copyright attribution to Adam Gąsowski
+- ✓ Enhanced HTML meta tags with SEO optimization, author, and license information
+- ✓ Created PRIVACY.md with detailed privacy policy for data handling transparency
+- ✓ Updated build output with new metadata (dist folder updated)
