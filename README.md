@@ -96,12 +96,22 @@ src/
 
 ## Wdrożenie
 
+### 🌐 Demo Online
+Aplikacja jest dostępna pod adresem: **https://push-to-talk-recorder.replit.app**
+
 ### Serwer statyczny
 Skopiuj zawartość folderu `dist/` na dowolny serwer HTTP:
 ```bash
 npm run build
 cp -r dist/* /var/www/html/
 ```
+
+### Replit Deployment
+1. Fork tego projektu na Replit
+2. Skonfiguruj zmienne środowiskowe w Secrets:
+   - `VITE_ENDPOINT_URL`: URL twojego endpointu
+   - `VITE_AUDIO_FORMAT`: Format audio (opcjonalne)
+3. Uruchom projekt - automatycznie zostanie wdrożony na domenie `.replit.app`
 
 ### Netlify/Vercel
 1. Podłącz repozytorium
