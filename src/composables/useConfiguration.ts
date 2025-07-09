@@ -5,6 +5,7 @@
 
 import { ref, computed, watch } from 'vue'
 import type { AudioFormat } from '@/types'
+import { useLogger } from './useLogger'
 
 // Configuration state
 const endpoint = ref<string>('')
@@ -16,6 +17,8 @@ const hasEnvEndpoint = !!(import.meta.env.VITE_ENDPOINT_URL)
 const hasEnvAudioFormat = !!(import.meta.env.VITE_AUDIO_FORMAT)
 
 export function useConfiguration() {
+  const logger = useLogger()
+  
   // Initialize configuration from environment variables or defaults
   const initializeConfiguration = () => {
     // Set endpoint from environment variable or empty string
@@ -25,8 +28,19 @@ export function useConfiguration() {
     const envFormat = import.meta.env.VITE_AUDIO_FORMAT as AudioFormat
     audioFormat.value = envFormat || 'webm'
     
+    // Log configuration initialization
+    if (endpoint.value) {
+      logger.logInfo(`Endpoint załadowany z env: ${endpoint.value}`)
+    }
+    if (envFormat) {
+      logger.logInfo(`Format audio załadowany z env: ${envFormat}`)
+    }
+    
     // Show configuration panel if no endpoint is configured
     showConfiguration.value = !endpoint.value
+    if (showConfiguration.value) {
+      logger.logInfo('Panel konfiguracji będzie wyświetlony (brak endpointu)')
+    }
   }
 
   // Configuration object for reactive access
@@ -71,9 +85,9 @@ export function useConfiguration() {
       
       // Save to localStorage for persistence
       localStorage.setItem('audio-recorder-endpoint', newEndpoint)
-      console.log('Endpoint updated:', newEndpoint)
+      logger.logConfigurationChange('endpoint', newEndpoint)
     } catch (error) {
-      console.error('Invalid endpoint URL:', error)
+      logger.logError('Nieprawidłowy format URL endpointu', error)
       throw new Error('Invalid endpoint URL format')
     }
   }
@@ -83,6 +97,7 @@ export function useConfiguration() {
     const validFormats: AudioFormat[] = ['webm', 'mp3', 'wav', 'ogg']
     
     if (!validFormats.includes(newFormat)) {
+      logger.logError(`Nieprawidłowy format audio: ${newFormat}`)
       throw new Error('Invalid audio format')
     }
     
@@ -90,7 +105,7 @@ export function useConfiguration() {
     
     // Save to localStorage for persistence
     localStorage.setItem('audio-recorder-format', newFormat)
-    console.log('Audio format updated:', newFormat)
+    logger.logConfigurationChange('audioFormat', newFormat)
   }
 
   // Reset configuration to environment variables or defaults

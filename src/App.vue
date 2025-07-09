@@ -87,6 +87,16 @@
             </div>
           </div>
         </div>
+
+        <!-- Log Panel -->
+        <div class="row justify-content-center mt-4">
+          <div class="col-md-10 col-lg-8">
+            <LogPanel 
+              :logs="logs" 
+              @clear="clearLogs"
+            />
+          </div>
+        </div>
       </div>
     </main>
 
@@ -103,8 +113,13 @@ import { onMounted, nextTick, computed } from 'vue'
 import PushToTalkButton from './components/PushToTalkButton.vue'
 import ConfigurationPanel from './components/ConfigurationPanel.vue'
 import StatusIndicator from './components/StatusIndicator.vue'
+import LogPanel from './components/LogPanel.vue'
 import { useConfiguration } from './composables/useConfiguration'
 import { useAudioRecording } from './composables/useAudioRecording'
+import { useLogger } from './composables/useLogger'
+
+// Logger setup
+const { logs, clearLogs, logAppStart } = useLogger()
 
 const {
   configuration,
@@ -139,6 +154,9 @@ const handleButtonClick = async () => {
 }
 
 onMounted(async () => {
+  // Initialize app logging
+  logAppStart()
+  
   await nextTick()
   if (window.feather) {
     window.feather.replace()

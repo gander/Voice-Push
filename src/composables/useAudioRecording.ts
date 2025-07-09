@@ -8,6 +8,7 @@ import type { RecordingStatus, AudioFormat } from '@/types'
 import { getAudioRecorder, cleanupAudioRecorder } from '@/services/audioRecorder'
 import { getHttpClient } from '@/services/httpClient'
 import type { TransmissionOptions } from '@/services/httpClient'
+import { useLogger } from './useLogger'
 
 interface Configuration {
   endpoint: string
@@ -25,6 +26,7 @@ export function useAudioRecording(configuration: Configuration) {
   // Services
   const audioRecorder = getAudioRecorder()
   const httpClient = getHttpClient()
+  const logger = useLogger()
 
   // Computed properties
   const isActive = computed(() => isRecording.value || isTransmitting.value)
@@ -40,13 +42,14 @@ export function useAudioRecording(configuration: Configuration) {
   // Initialize audio recorder
   const initializeRecorder = async () => {
     try {
+      logger.logInitialization('Audio Recorder')
       // Don't initialize immediately - wait for user interaction
       canRecord.value = false
       recordingStatus.value = 'idle'
       errorMessage.value = ''
-      console.log('Audio recorder ready for user interaction')
+      logger.logInfo('Audio recorder gotowy do interakcji użytkownika')
     } catch (error) {
-      console.error('Failed to initialize audio recorder:', error)
+      logger.logError('Błąd inicjalizacji audio recorder', error)
       canRecord.value = false
       recordingStatus.value = 'error'
       errorMessage.value = error instanceof Error ? error.message : 'Failed to initialize microphone'
@@ -56,13 +59,15 @@ export function useAudioRecording(configuration: Configuration) {
   // Request microphone permission and initialize
   const requestMicrophoneAccess = async () => {
     try {
+      logger.logPermissionRequest()
       await audioRecorder.initialize()
       canRecord.value = true
       recordingStatus.value = 'idle'
       errorMessage.value = ''
-      console.log('Microphone access granted and recorder initialized')
+      logger.logPermissionGranted()
     } catch (error) {
-      console.error('Failed to get microphone access:', error)
+      logger.logPermissionDenied()
+      logger.logError('Błąd dostępu do mikrofonu', error)
       canRecord.value = false
       recordingStatus.value = 'error'
       
@@ -86,18 +91,19 @@ export function useAudioRecording(configuration: Configuration) {
   // Start recording with automatic permission request
   const startRecording = async () => {
     if (isActive.value) {
-      console.warn('Cannot start recording - already active')
+      logger.logWarning('Nie można rozpocząć nagrywania - aplikacja już aktywna')
       return
     }
 
     if (!configuration.endpoint) {
+      logger.logError('Brak skonfigurowanego endpointu')
       setError('Endpoint not configured')
       return
     }
 
     // If not ready, request microphone access first
     if (!canRecord.value) {
-      console.log('Requesting microphone access...')
+      logger.logInfo('Żądanie dostępu do mikrofonu przed nagrywaniem...')
       await requestMicrophoneAccess()
       
       // If still can't record after permission request, stop here
@@ -110,11 +116,12 @@ export function useAudioRecording(configuration: Configuration) {
       clearError()
       isRecording.value = true
       recordingStatus.value = 'recording'
+      logger.logRecorderState('recording')
       
       await audioRecorder.startRecording(configuration.audioFormat)
-      console.log('Recording started')
+      logger.logRecordingStart(configuration.audioFormat)
     } catch (error) {
-      console.error('Failed to start recording:', error)
+      logger.logError('Błąd rozpoczęcia nagrywania', error)
       isRecording.value = false
       recordingStatus.value = 'error'
       setError(error instanceof Error ? error.message : 'Failed to start recording')
@@ -124,18 +131,22 @@ export function useAudioRecording(configuration: Configuration) {
   // Stop recording and transmit
   const stopRecording = async () => {
     if (!isRecording.value) {
-      console.warn('Cannot stop recording - not currently recording')
+      logger.logWarning('Nie można zatrzymać nagrywania - nagrywanie nie jest aktywne')
       return
     }
 
+    const recordingStartTime = Date.now()
+    
     try {
       isRecording.value = false
       recordingStatus.value = 'transmitting'
       isTransmitting.value = true
+      logger.logRecorderState('transmitting')
 
       // Stop recording and get audio blob
       const audioBlob = await audioRecorder.stopRecording()
-      console.log(`Recording stopped. Audio blob size: ${audioBlob.size} bytes`)
+      const recordingDuration = (Date.now() - recordingStartTime) / 1000
+      logger.logRecordingStop(recordingDuration, audioBlob.size)
 
       // Prepare transmission options
       const transmissionOptions: TransmissionOptions = {
@@ -143,30 +154,32 @@ export function useAudioRecording(configuration: Configuration) {
         audioFormat: configuration.audioFormat,
         filename: generateFilename(),
         additionalFields: {
-          duration: 'unknown', // Could be calculated if needed
+          duration: recordingDuration.toFixed(1),
           userAgent: navigator.userAgent,
           timestamp: new Date().toISOString()
         }
       }
 
       // Send audio to endpoint
+      logger.logTransmissionStart(configuration.endpoint)
       const result = await httpClient.sendAudio(audioBlob, transmissionOptions)
       
       if (result.success) {
         recordingStatus.value = 'success'
-        console.log('Audio transmitted successfully:', result.message)
+        logger.logTransmissionSuccess(configuration.endpoint, result.responseData)
         
         // Reset to idle after a short delay
         setTimeout(() => {
           if (recordingStatus.value === 'success') {
             recordingStatus.value = 'idle'
+            logger.logRecorderState('idle')
           }
         }, 2000)
       } else {
         throw new Error(result.message)
       }
     } catch (error) {
-      console.error('Failed to stop recording or transmit:', error)
+      logger.logTransmissionError(configuration.endpoint, error)
       recordingStatus.value = 'error'
       setError(error instanceof Error ? error.message : 'Failed to process recording')
     } finally {
