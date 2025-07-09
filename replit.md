@@ -6,7 +6,7 @@ This is a Vue.js-based web application that provides push-to-talk audio recordin
 
 ## User Preferences
 
-Preferred communication style: Simple, everyday language.
+Preferred communication style: Simple, everyday language (Polish language support).
 
 ## System Architecture
 

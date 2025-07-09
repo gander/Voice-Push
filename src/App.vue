@@ -122,7 +122,7 @@ const {
   startRecording,
   stopRecording,
   requestMicrophoneAccess
-} = useAudioRecording(configuration)
+} = useAudioRecording(configuration.value)
 
 // Computed property for button state
 const needsPermission = computed(() => 

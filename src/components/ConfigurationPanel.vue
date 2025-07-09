@@ -115,7 +115,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import type { AudioFormat } from '@/types'
-import { getMimeType, checkFormatSupport } from '@/utils/mimeTypes'
+import { checkFormatSupport } from '@/utils/mimeTypes'
 
 interface Props {
   endpoint: string
@@ -146,7 +146,7 @@ const envVariablesDetected = computed(() => {
 })
 
 const isFormValid = computed(() => {
-  return localEndpoint.value.trim() !== '' && localAudioFormat.value !== ''
+  return localEndpoint.value.trim() !== '' && !!localAudioFormat.value
 })
 
 const checkBrowserSupport = () => {

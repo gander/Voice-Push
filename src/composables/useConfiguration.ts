@@ -37,7 +37,7 @@ export function useConfiguration() {
 
   // Check if configuration is valid
   const isConfigurationValid = computed(() => {
-    return endpoint.value.trim() !== '' && audioFormat.value !== ''
+    return endpoint.value.trim() !== '' && !!audioFormat.value
   })
 
   // Check if configuration is complete (both endpoint and format are set)

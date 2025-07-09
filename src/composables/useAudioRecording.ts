@@ -305,7 +305,7 @@ export function useAudioRecording(configuration: Configuration) {
     const activeElement = document.activeElement
     return activeElement?.tagName === 'INPUT' || 
            activeElement?.tagName === 'TEXTAREA' || 
-           activeElement?.contentEditable === 'true'
+           (activeElement as HTMLElement)?.contentEditable === 'true'
   }
 
   onMounted(() => {
