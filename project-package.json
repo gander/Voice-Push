@@ -1,0 +1,44 @@
+{
+  "name": "push-to-talk-recorder",
+  "version": "1.1.1",
+  "description": "Vue.js 3 + TypeScript push-to-talk audio recording application with configurable endpoints and audio formats",
+  "main": "src/main.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5000",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview --port 5000",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "keywords": [
+    "vue",
+    "typescript", 
+    "audio",
+    "recording",
+    "push-to-talk",
+    "webhook",
+    "n8n",
+    "make",
+    "automation"
+  ],
+  "author": "Adam Gąsowski",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamgasowski/push-to-talk-recorder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adamgasowski/push-to-talk-recorder/issues"
+  },
+  "homepage": "https://github.com/adamgasowski/push-to-talk-recorder#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}

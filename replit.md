@@ -6,7 +6,8 @@ This is a Vue.js-based web application that provides push-to-talk audio recordin
 
 ## User Preferences
 
-Preferred communication style: Simple, everyday language (Polish language support).
+- Preferred communication style: Simple, everyday language (Polish language support)
+- Version management: Increment minor version for each bug fix/improvement
 
 ## System Architecture
 
@@ -113,3 +114,5 @@ Preferred communication style: Simple, everyday language (Polish language suppor
 - ✓ Enhanced HTML meta tags with SEO optimization, author, and license information
 - ✓ Created PRIVACY.md with detailed privacy policy for data handling transparency
 - ✓ Updated build output with new metadata (dist folder updated)
+- ✓ v1.1.0: Added comprehensive logging system with LogPanel component
+- ✓ v1.1.1: Set log panel to be expanded by default for better user experience
