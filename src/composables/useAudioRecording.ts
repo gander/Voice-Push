@@ -141,8 +141,8 @@ export function useAudioRecording(configuration: Configuration) {
       return
     }
 
-    if (!configuration.endpoint) {
-      logger.logError('Brak skonfigurowanego endpointu')
+    if (!configuration.endpoint || configuration.endpoint.trim() === '') {
+      logger.logError('Brak skonfigurowanego endpointu', { currentEndpoint: configuration.endpoint })
       setError('Endpoint not configured')
       return
     }

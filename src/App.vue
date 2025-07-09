@@ -49,15 +49,19 @@
 
                 <!-- Configuration Status -->
                 <div class="mt-4">
-                  <div class="d-flex justify-content-between align-items-center mb-2">
-                    <small class="text-muted">Endpoint:</small>
-                    <small class="text-truncate ms-2" style="max-width: 200px;">
-                      {{ configuration.endpoint || 'Not configured' }}
-                    </small>
-                  </div>
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <small class="text-muted">Format:</small>
-                    <small>{{ configuration.audioFormat.toUpperCase() }}</small>
+                  <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                    <div class="d-flex align-items-center gap-1">
+                      <small class="text-muted">Endpoint:</small>
+                      <i 
+                        :data-feather="configuration.endpoint ? 'check-circle' : 'x-circle'"
+                        :class="configuration.endpoint ? 'text-success' : 'text-danger'"
+                        style="width: 16px; height: 16px;"
+                      ></i>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                      <small class="text-muted">Format:</small>
+                      <small class="text-primary fw-bold">{{ configuration.audioFormat.toUpperCase() }}</small>
+                    </div>
                   </div>
                   
                   <div class="d-flex gap-2 justify-content-center">
@@ -115,7 +119,7 @@
 
     <footer class="bg-light text-center p-3 mt-auto">
       <small class="text-muted">
-        Push-to-Talk Audio Recorder v1.1.7 | Vue.js 3 + TypeScript
+        Push-to-Talk Audio Recorder v1.1.8 | Vue.js 3 + TypeScript
       </small>
     </footer>
   </div>

@@ -21,24 +21,27 @@ export function useConfiguration() {
   
   // Initialize configuration from environment variables or defaults
   const initializeConfiguration = () => {
-    // Set endpoint from environment variable or empty string
-    endpoint.value = import.meta.env.VITE_ENDPOINT_URL || ''
+    // Load persisted configuration first
+    loadPersistedConfiguration()
     
-    // Set audio format from environment variable or default to webm
-    const envFormat = import.meta.env.VITE_AUDIO_FORMAT as AudioFormat
-    audioFormat.value = envFormat || 'webm'
-    
-    // Log configuration initialization
-    if (endpoint.value) {
+    // Override with environment variables if available
+    if (import.meta.env.VITE_ENDPOINT_URL) {
+      endpoint.value = import.meta.env.VITE_ENDPOINT_URL
       logger.logInfo(`Endpoint załadowany z env: ${endpoint.value}`)
     }
+    
+    const envFormat = import.meta.env.VITE_AUDIO_FORMAT as AudioFormat
     if (envFormat) {
+      audioFormat.value = envFormat
       logger.logInfo(`Format audio załadowany z env: ${envFormat}`)
     }
     
     // Configuration panel is hidden by default - user can open it manually
     showConfiguration.value = false
     logger.logInfo('Panel konfiguracji ukryty domyślnie')
+    
+    // Log current configuration status
+    logger.logInfo(`Obecna konfiguracja - Endpoint: ${endpoint.value ? 'ustawiony' : 'brak'}, Format: ${audioFormat.value}`)
   }
 
   // Configuration object for reactive access
