@@ -41,13 +41,13 @@ export class HttpClient {
     try {
       const formData = this.createFormData(audioBlob, audioFormat, filename, additionalFields)
       
-      this.logger.logDebug(`Wysyłanie ${(audioBlob.size / 1024).toFixed(1)} KB do ${endpoint}`)
+      this.logger.logDebug(`Sending ${(audioBlob.size / 1024).toFixed(1)} KB to ${endpoint}`)
 
       const response = await this.makeRequest(endpoint, formData)
       
       return await this.handleResponse(response, endpoint)
     } catch (error) {
-      this.logger.logError('Błąd wysyłania audio', error)
+      this.logger.logError('Audio sending error', error)
       
       if (error instanceof Error) {
         throw error
@@ -150,7 +150,7 @@ export class HttpClient {
         }
       }
     } catch (parseError) {
-      this.logger.logWarning('Błąd parsowania odpowiedzi serwera', parseError)
+      this.logger.logWarning('Server response parsing error', parseError)
       // Keep the original status message if parsing fails
     }
 

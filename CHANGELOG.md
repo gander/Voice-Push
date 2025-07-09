@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2025-07-09
+
+### Changed
+- Complete English translation of all UI text, messages, and log entries
+- Translated all Polish text in Vue components (App.vue, ConfigurationPanel.vue, PushToTalkButton.vue, LogPanel.vue)
+- Translated all Polish messages in TypeScript composables (useAudioRecording.ts, useConfiguration.ts, useLogger.ts)
+- Translated all Polish text in services (httpClient.ts, audioRecorder.ts)
+
+### Fixed
+- TypeScript build errors for production deployment
+- Readonly array type compatibility issues
+- MediaDevices API permission checking compatibility
+- Removed deprecated fractionalSecondDigits option for better browser support
+
+### Technical
+- Successfully generated production build to dist folder
+- Maintained all existing functionality while completing translation
+- Updated version to 2.0.1 in project-package.json
+
 ## [2.0.0] - 2025-07-09
 
 ### Added

@@ -78,7 +78,7 @@
                       @click="showLogs = !showLogs"
                     >
                       <i data-feather="list" class="me-1"></i>
-                      {{ showLogs ? 'Ukryj logi' : 'Pokaż logi' }}
+                      {{ showLogs ? 'Hide Logs' : 'Show Logs' }}
                     </button>
                     
 
@@ -108,7 +108,7 @@
         <div class="row justify-content-center mt-4" v-if="showLogs">
           <div class="col-md-10 col-lg-8">
             <LogPanel 
-              :logs="logs" 
+              :logs="[...logs]" 
               @clear="clearLogs"
               @close="showLogs = false"
             />
@@ -157,7 +157,7 @@ const {
   startRecording,
   stopRecording,
   requestMicrophoneAccess,
-  checkMicrophonePermissions
+
 } = useAudioRecording(configuration.value)
 
 // Computed property for button state

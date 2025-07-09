@@ -4,27 +4,27 @@
       <div class="card-header d-flex justify-content-between align-items-center">
         <h6 class="mb-0">
           <i data-feather="terminal" class="me-2"></i>
-          Logi aplikacji
+          Application Logs
         </h6>
         <div class="d-flex gap-2">
           <button 
             @click="togglePanel" 
             class="btn btn-outline-secondary btn-sm"
-            :title="isExpanded ? 'Zwiń panel' : 'Rozwiń panel'"
+            :title="isExpanded ? 'Collapse panel' : 'Expand panel'"
           >
             <i :data-feather="isExpanded ? 'chevron-up' : 'chevron-down'"></i>
           </button>
           <button 
             @click="clearLogs" 
             class="btn btn-outline-danger btn-sm"
-            title="Wyczyść logi"
+            title="Clear logs"
           >
             <i data-feather="trash-2"></i>
           </button>
           <button 
             @click="$emit('close')" 
             class="btn btn-outline-secondary btn-sm"
-            title="Zamknij panel logów"
+            title="Close log panel"
           >
             <i data-feather="x"></i>
           </button>
@@ -53,7 +53,7 @@
           
           <div v-if="logs.length === 0" class="no-logs text-muted text-center py-4">
             <i data-feather="info" class="me-2"></i>
-            Brak logów do wyświetlenia
+            No logs to display
           </div>
         </div>
         
@@ -66,7 +66,7 @@
               v-model="autoScroll"
             >
             <label class="form-check-label" for="autoScroll">
-              Automatyczne przewijanie
+              Auto scroll
             </label>
           </div>
           
@@ -78,12 +78,12 @@
               v-model="showDebug"
             >
             <label class="form-check-label" for="showDebug">
-              Pokaż debug
+              Show debug
             </label>
           </div>
           
           <span class="text-muted small ms-3">
-            Logi: {{ visibleLogs.length }} / {{ logs.length }}
+            Logs: {{ visibleLogs.length }} / {{ logs.length }}
           </span>
         </div>
       </div>
@@ -149,11 +149,11 @@ const scrollToBottom = () => {
 }
 
 const formatTime = (timestamp: Date): string => {
-  return timestamp.toLocaleTimeString('pl-PL', {
+  return timestamp.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-    fractionalSecondDigits: 3
+    // fractionalSecondDigits: 3 // Not supported in all browsers
   })
 }
 

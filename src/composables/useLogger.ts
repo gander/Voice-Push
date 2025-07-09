@@ -84,21 +84,21 @@ export function useLogger() {
   }
 
   const logRecordingStart = (format: string) => {
-    logSuccess(`Rozpoczęto nagrywanie w formacie ${format.toUpperCase()}`)
+    logSuccess(`Started recording in ${format.toUpperCase()} format`)
   }
 
   const logRecordingStop = (duration: number, size: number) => {
-    logSuccess(`Zakończono nagrywanie (${duration.toFixed(1)}s, ${(size / 1024).toFixed(1)} KB)`)
+    logSuccess(`Recording completed (${duration.toFixed(1)}s, ${(size / 1024).toFixed(1)} KB)`)
   }
 
   const logTransmissionStart = (endpoint: string) => {
-    logInfo(`Rozpoczęto wysyłanie do: ${endpoint}`)
+    logInfo(`Started transmission to: ${endpoint}`)
   }
 
   const logTransmissionSuccess = (endpoint: string, result: any) => {
     const statusCode = result?.status || 'unknown'
     const message = result?.message || 'Success'
-    logSuccess(`Pomyślnie wysłano do: ${endpoint} (${statusCode})`, {
+    logSuccess(`Successfully sent to: ${endpoint} (${statusCode})`, {
       status: statusCode,
       message: message,
       responseData: result?.responseData,
@@ -107,30 +107,30 @@ export function useLogger() {
   }
 
   const logTransmissionError = (endpoint: string, error: any) => {
-    logError(`Błąd wysyłania do: ${endpoint}`, error)
+    logError(`Transmission error to: ${endpoint}`, error)
   }
 
   const logServerResponse = (endpoint: string, status: number, responseData: any, responseText?: string) => {
     if (status >= 200 && status < 300) {
-      logSuccess(`Odpowiedź serwera ${status}: ${responseText || 'OK'}`, {
+      logSuccess(`Server response ${status}: ${responseText || 'OK'}`, {
         endpoint,
         status,
         data: responseData
       })
     } else if (status >= 400 && status < 500) {
-      logWarning(`Błąd klienta ${status}: ${responseText || 'Client Error'}`, {
+      logWarning(`Client error ${status}: ${responseText || 'Client Error'}`, {
         endpoint,
         status,
         data: responseData
       })
     } else if (status >= 500) {
-      logError(`Błąd serwera ${status}: ${responseText || 'Server Error'}`, {
+      logError(`Server error ${status}: ${responseText || 'Server Error'}`, {
         endpoint,
         status,
         data: responseData
       })
     } else {
-      logInfo(`Odpowiedź serwera ${status}: ${responseText || 'Unknown'}`, {
+      logInfo(`Server response ${status}: ${responseText || 'Unknown'}`, {
         endpoint,
         status,
         data: responseData
@@ -139,31 +139,31 @@ export function useLogger() {
   }
 
   const logPermissionRequest = () => {
-    logInfo('Żądanie uprawnień do mikrofonu...')
+    logInfo('Requesting microphone permissions...')
   }
 
   const logPermissionGranted = () => {
-    logSuccess('Uzyskano uprawnienia do mikrofonu')
+    logSuccess('Microphone permissions granted')
   }
 
   const logPermissionDenied = () => {
-    logError('Odmówiono uprawnień do mikrofonu')
+    logError('Microphone permissions denied')
   }
 
   const logConfigurationChange = (field: string, value: any) => {
-    logInfo(`Zmieniono konfigurację: ${field} = ${value}`)
+    logInfo(`Configuration changed: ${field} = ${value}`)
   }
 
   const logBrowserSupport = (format: string, supported: boolean) => {
     if (supported) {
-      logDebug(`Format ${format.toUpperCase()} jest obsługiwany`)
+      logDebug(`Format ${format.toUpperCase()} is supported`)
     } else {
-      logWarning(`Format ${format.toUpperCase()} nie jest obsługiwany`)
+      logWarning(`Format ${format.toUpperCase()} is not supported`)
     }
   }
 
   const logRecorderState = (state: string) => {
-    logDebug(`Stan nagrywania: ${state}`)
+    logDebug(`Recording state: ${state}`)
   }
 
   const logHttpRequest = (method: string, url: string, status?: number) => {
@@ -180,9 +180,9 @@ export function useLogger() {
 
   const logInitialization = (component: string, success: boolean = true) => {
     if (success) {
-      logInfo(`Zainicjalizowano: ${component}`)
+      logInfo(`Initialized: ${component}`)
     } else {
-      logError(`Błąd inicjalizacji: ${component}`)
+      logError(`Initialization error: ${component}`)
     }
   }
 
@@ -190,7 +190,7 @@ export function useLogger() {
   const logAppStart = () => {
     clearLogs()
     // Only log essential startup information, skip verbose system details
-    logSuccess('Aplikacja gotowa do użycia')
+    logSuccess('Application ready to use')
   }
 
   return {

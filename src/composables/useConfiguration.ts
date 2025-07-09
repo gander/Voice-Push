@@ -27,21 +27,21 @@ export function useConfiguration() {
     // Override with environment variables if available
     if (import.meta.env.VITE_ENDPOINT_URL) {
       endpoint.value = import.meta.env.VITE_ENDPOINT_URL
-      logger.logInfo(`Endpoint załadowany z env: ${endpoint.value}`)
+      logger.logInfo(`Endpoint loaded from env: ${endpoint.value}`)
     }
     
     const envFormat = import.meta.env.VITE_AUDIO_FORMAT as AudioFormat
     if (envFormat) {
       audioFormat.value = envFormat
-      logger.logInfo(`Format audio załadowany z env: ${envFormat}`)
+      logger.logInfo(`Audio format loaded from env: ${envFormat}`)
     }
     
     // Configuration panel is hidden by default - user can open it manually
     showConfiguration.value = false
-    logger.logInfo('Panel konfiguracji ukryty domyślnie')
+    logger.logInfo('Configuration panel hidden by default')
     
     // Log current configuration status
-    logger.logInfo(`Obecna konfiguracja - Endpoint: ${endpoint.value ? 'ustawiony' : 'brak'}, Format: ${audioFormat.value}`)
+    logger.logInfo(`Current configuration - Endpoint: ${endpoint.value ? 'set' : 'missing'}, Format: ${audioFormat.value}`)
   }
 
   // Configuration object for reactive access
@@ -88,7 +88,7 @@ export function useConfiguration() {
       localStorage.setItem('audio-recorder-endpoint', newEndpoint)
       logger.logConfigurationChange('endpoint', newEndpoint)
     } catch (error) {
-      logger.logError('Nieprawidłowy format URL endpointu', error)
+      logger.logError('Invalid endpoint URL format', error)
       throw new Error('Invalid endpoint URL format')
     }
   }
@@ -98,7 +98,7 @@ export function useConfiguration() {
     const validFormats: AudioFormat[] = ['webm', 'mp3', 'wav', 'ogg']
     
     if (!validFormats.includes(newFormat)) {
-      logger.logError(`Nieprawidłowy format audio: ${newFormat}`)
+      logger.logError(`Invalid audio format: ${newFormat}`)
       throw new Error('Invalid audio format')
     }
     
