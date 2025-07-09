@@ -8,6 +8,7 @@ This is a Vue.js-based web application that provides push-to-talk audio recordin
 
 - Preferred communication style: Simple, everyday language (Polish language support)
 - Version management: Increment minor version for each bug fix/improvement
+- Build process: Generate production build to dist folder after every code change
 
 ## System Architecture
 
