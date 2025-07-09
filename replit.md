@@ -127,3 +127,4 @@ This is a Vue.js-based web application that provides push-to-talk audio recordin
 - ✓ v1.1.9: Removed verbose startup logs (User Agent, language, window size) for cleaner log output
 - ✓ v2.0.0: MAJOR VERSION - Updated all documentation to English, created CHANGELOG.md, simplified README with focused content
 - ✓ v2.0.1: Complete English translation of all UI text, messages, and log entries throughout the application
+- ✓ v2.0.1: Fixed version display in application footer to show correct version 2.0.1
