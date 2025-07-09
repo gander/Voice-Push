@@ -70,6 +70,14 @@
                     </button>
                     
                     <button
+                      class="btn btn-outline-info btn-sm"
+                      @click="showLogs = !showLogs"
+                    >
+                      <i data-feather="list" class="me-1"></i>
+                      {{ showLogs ? 'Ukryj logi' : 'Pokaż logi' }}
+                    </button>
+                    
+                    <button
                       class="btn btn-outline-primary btn-sm"
                       @click="handleMicrophonePermissions"
                       :disabled="isActive"
@@ -100,11 +108,12 @@
         </div>
 
         <!-- Log Panel -->
-        <div class="row justify-content-center mt-4">
+        <div class="row justify-content-center mt-4" v-if="showLogs">
           <div class="col-md-10 col-lg-8">
             <LogPanel 
               :logs="logs" 
               @clear="clearLogs"
+              @close="showLogs = false"
             />
           </div>
         </div>
@@ -113,14 +122,14 @@
 
     <footer class="bg-light text-center p-3 mt-auto">
       <small class="text-muted">
-        Push-to-Talk Audio Recorder v1.1.3 | Vue.js 3 + TypeScript
+        Push-to-Talk Audio Recorder v1.1.4 | Vue.js 3 + TypeScript
       </small>
     </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, nextTick, computed } from 'vue'
+import { onMounted, nextTick, computed, ref } from 'vue'
 import PushToTalkButton from './components/PushToTalkButton.vue'
 import ConfigurationPanel from './components/ConfigurationPanel.vue'
 import StatusIndicator from './components/StatusIndicator.vue'
@@ -131,6 +140,9 @@ import { useLogger } from './composables/useLogger'
 
 // Logger setup
 const { logs, clearLogs, logAppStart } = useLogger()
+
+// UI state
+const showLogs = ref(false)
 
 const {
   configuration,

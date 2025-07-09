@@ -21,6 +21,13 @@
           >
             <i data-feather="trash-2"></i>
           </button>
+          <button 
+            @click="$emit('close')" 
+            class="btn btn-outline-secondary btn-sm"
+            title="Zamknij panel logów"
+          >
+            <i data-feather="x"></i>
+          </button>
         </div>
       </div>
       
@@ -103,6 +110,7 @@ const props = defineProps<{
 // Emits
 const emit = defineEmits<{
   clear: []
+  close: []
 }>()
 
 // State

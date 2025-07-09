@@ -119,3 +119,4 @@ This is a Vue.js-based web application that provides push-to-talk audio recordin
 - ✓ v1.1.1: Set log panel to be expanded by default for better user experience
 - ✓ v1.1.2: Enhanced logging with detailed server response status and data display
 - ✓ v1.1.3: Fixed microphone permissions handling - auto-check existing permissions and added manual permission button
+- ✓ v1.1.4: Added toggle button for log panel visibility with close button in panel header
