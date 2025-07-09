@@ -125,3 +125,4 @@ This is a Vue.js-based web application that provides push-to-talk audio recordin
 - ✓ v1.1.7: Removed microphone status buttons - cleaner interface with automatic permissions handling
 - ✓ v1.1.8: Fixed endpoint detection bug and replaced endpoint path display with status icons (check/X)
 - ✓ v1.1.9: Removed verbose startup logs (User Agent, language, window size) for cleaner log output
+- ✓ v2.0.0: MAJOR VERSION - Updated all documentation to English, created CHANGELOG.md, simplified README with focused content
