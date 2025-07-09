@@ -106,7 +106,7 @@ const emit = defineEmits<{
 }>()
 
 // State
-const isExpanded = ref(false)
+const isExpanded = ref(true)
 const autoScroll = ref(true)
 const showDebug = ref(false)
 const logContainer = ref<HTMLElement>()
